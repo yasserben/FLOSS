@@ -153,19 +153,20 @@ python ./tools/test.py configs/clipdinoiser.py --dataset ade20k --mode compute_m
 | CLIP-DINOiser | 31.1 | 80.9 | 35.9 | 20.0 | 24.6 | 38.5 |
 | + FLOSS | **34.6** | **82.3** | **36.2** | **20.7** | **24.7** | **39.7** |
 
-
-
-<!-- ## 📚 Citation
+## 📚 Citation
 
 If you find this work useful, please cite our paper:
 ```bibtex
-@inproceedings{TODO,
-    title={FLOSS: Expert Template Selection for Open-Vocabulary Semantic Segmentation},
-    author={TODO},
-    booktitle={TODO},
-    year={2025}
+@misc{benigmim2025flossfreelunchopenvocabulary,
+      title={FLOSS: Free Lunch in Open-vocabulary Semantic Segmentation},
+      author={Yasser Benigmim and Mohammad Fahes and Tuan-Hung Vu and Andrei Bursuc and Raoul de Charette},
+      year={2025},
+      eprint={2504.10487},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2504.10487},
 }
-``` -->
+```
 
 ## 🙏 Acknowledgments
 
