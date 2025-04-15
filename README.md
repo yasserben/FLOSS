@@ -1,7 +1,7 @@
 # FLOSS: Free Lunch in Open-vocabulary Semantic Segmentation
 
 <!-- [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/TODO/open-vocabulary-semantic-segmentation-on)](https://paperswithcode.com/paper/TODO) -->
-<!-- [![arXiv](https://img.shields.io/badge/arXiv-TODO-b31b1b.svg)](https://arxiv.org/abs/TODO) -->
+[![arXiv](https://img.shields.io/badge/arXiv-2504.10487-b31b1b.svg)](https://arxiv.org/abs/2504.10487)
 <!-- [![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://TODO) -->
 
 This is the official implementation of our paper:  
@@ -13,10 +13,10 @@ This is the official implementation of our paper:
 # Table of Contents
 - [🎯 TL;DR](#-tldr)
 - [⚙️ Installation](#️-installation)
-- [🗂️ Data Preparation](#data-preparation)
-- [🔍 Evaluating Models](#evaluating-models)
-- [🏆 Computing Template Rankings](#computing-template-rankings)
-- [📈 Results](#results)
+- [🗂️ Data Preparation](#️-data-preparation)
+- [🔍 Evaluating Models](#-evaluating-models)
+- [🏆 Computing Template Rankings](#-computing-template-rankings)
+- [📈 Results](#-results)
 - [📚 Citation](#-citation)
 
 ## 🎯 TL;DR
