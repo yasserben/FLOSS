@@ -1,0 +1,10 @@
+*.pyc
+*/__pycache__/*
+/work_dirs/*
+.vscode/
+data/
+*.out
+*.txt
+*.png
+*.zip
+*.pth
