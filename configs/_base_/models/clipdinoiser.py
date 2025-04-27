@@ -50,7 +50,7 @@ model = dict(
         ),
         init_cfg=dict(
             type="Pretrained",
-            checkpoint="./checkpoints/clip_dinoiser/clip_dinoiser_modified_renamed.pt",
+            checkpoint="./checkpoints/clip_dinoiser/model_weights.pth",
         ),
     ),
     data_preprocessor=dict(
