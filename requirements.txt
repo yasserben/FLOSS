@@ -1,0 +1,30 @@
+# Core ML/DL
+mmcv==2.1.0
+mmengine>=0.10.4
+timm==0.4.12
+open-clip-torch==2.24.0
+scipy==1.12.0
+
+
+# Vision and Image Processing
+Pillow>=10.0.1
+opencv-python>=4.9.0
+kornia>=0.7.2
+
+# Utilities
+numpy>=1.26.3
+einops>=0.7.0
+ftfy>=6.1.3  # Used for text processing in CLIP
+regex>=2023.12  # Used for text processing
+tqdm>=4.65.2  # Progress bars
+omegaconf>=2.3.0  # Configuration management
+PyYAML>=6.0.1  # Configuration files
+prettytable==3.9.0
+
+# Optional but recommended
+xformers>=0.0.23  # For efficient attention (optional but recommended)
+tensorboard>=2.15.1  # For logging (optional)
+wandb>=0.16.4  # For experiment tracking (optional)
+
+# Development
+yapf>=0.40.2  # Code formatting
