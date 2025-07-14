@@ -1,7 +1,7 @@
 _base_ = "./base_config.py"
 
 # model settings
-model = dict(name_path="./configs/naclip/cls_cocostuff.txt")
+model = dict(name_path="./configs/naclip/cls_cocostuff.txt", dataset="cocostuff")
 
 # dataset settings
 dataset_type = "COCOStuffDataset"

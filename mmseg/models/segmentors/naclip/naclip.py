@@ -138,6 +138,44 @@ class NACLIP(BaseSegmentor):
                         f"No valid templates found with cap_pp={cap_pp} for class {class_name}"
                     )
 
+        # Apply dataset-specific fixes
+        if self.dataset == "pascalvoc20":
+            template_dict = self._apply_quick_and_dirty_fix(template_dict)
+
+        return template_dict
+
+    def _apply_quick_and_dirty_fix(self, template_dict):
+        """Apply quick and dirty fixes for pascalvoc20 dataset template mappings.
+
+        Args:
+            template_dict (dict): Template dictionary to modify
+
+        Returns:
+            dict: Modified template dictionary
+        """
+        # replace the key 'boat' by 'ship'
+        template_dict["ship"] = template_dict["boat"]
+        del template_dict["boat"]
+
+        # replace the key "diningtable" by "table"
+        template_dict["table"] = template_dict["diningtable"]
+        del template_dict["diningtable"]
+
+        # add the keys "person in shirt", person in jeans, person in dress, person in sweater, person in skirt, person in jacket" "
+        template_dict["person in shirt"] = template_dict["person"]
+        template_dict["person in jeans"] = template_dict["person"]
+        template_dict["person in dress"] = template_dict["person"]
+        template_dict["person in sweater"] = template_dict["person"]
+        template_dict["person in skirt"] = template_dict["person"]
+        template_dict["person in jacket"] = template_dict["person"]
+
+        # add the keys 'television monitor", 'tv monitor" and "monitor"
+        template_dict["television monitor"] = template_dict["tvmonitor"]
+        template_dict["tv monitor"] = template_dict["tvmonitor"]
+        template_dict["monitor"] = template_dict["tvmonitor"]
+        template_dict["television"] = template_dict["tvmonitor"]
+        template_dict["screen"] = template_dict["tvmonitor"]
+
         return template_dict
 
     def expert_fusion(

@@ -122,7 +122,7 @@ python ./tools/test.py configs/maskclip.py --dataset DATASET --mode fusion
 python ./tools/eval_naclip.py --dataset DATASET --mode fusion
 ```
 
-Replace `DATASET` with one of: `cityscapes`, `pascalvoc20`, `pascalco59`, `ade20k`, `coco_stuff`, `mapillary`, `bdd10k`, or `acdc_night`, `acdc_snow`, `acdc_rain` `acdc_fog`.
+Replace `DATASET` with one of: `cityscapes`, `pascalvoc20`, `pascalco59`, `ade20k`, `cocostuff`, `mapillary`, `bdd10k`, or `acdc_night`, `acdc_snow`, `acdc_rain` `acdc_fog`.
 
 ## 🏆 Computing Template Rankings
 
