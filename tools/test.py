@@ -181,6 +181,8 @@ def update_config(
                 cfg.test_evaluator["dataset_name"] = dataset_name
             if cfg.model["model_name"] == "maskclip":
                 cfg.test_evaluator["model_name"] = "maskclip"
+            # Set ignore_index for IoU computation (255 is typically used for unlabeled pixels)
+            cfg.test_evaluator["ignore_index"] = 255
 
 
 def main():
@@ -223,11 +225,11 @@ def main():
         else:
             cfg.test_evaluator["save_miou"] = cfg.work_dir
 
-    if args.mode == "compute_metric":
-        cfg.test_evaluator["id_start"] = args.id_start
-        cfg.test_evaluator["id_end"] = args.id_end
-        cfg.model["id_start"] = args.id_start
-        cfg.model["id_end"] = args.id_end
+
+    cfg.test_evaluator["id_start"] = args.id_start
+    cfg.test_evaluator["id_end"] = args.id_end
+    cfg.model["id_start"] = args.id_start
+    cfg.model["id_end"] = args.id_end
 
     # build the runner from config
     runner = Runner.from_cfg(cfg)

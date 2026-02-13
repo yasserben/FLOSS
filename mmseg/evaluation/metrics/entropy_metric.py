@@ -14,6 +14,7 @@ from mmseg.models.utils import resize
 import fcntl  # For file locking
 import time
 from mmseg.registry import METRICS
+from .iou_metric import IoUMetric
 
 
 @METRICS.register_module()
@@ -35,6 +36,10 @@ class EntropyMetric(BaseMetric):
             names to disambiguate homonymous metrics of different evaluators.
             If prefix is not provided in the argument, self.default_prefix
             will be used instead. Defaults to None.
+        save_miou (str, optional): Directory path to save mIoU results.
+            Defaults to None.
+        ignore_index (int): Index that will be ignored in IoU evaluation.
+            Default: 255.
     """
 
     def __init__(
@@ -49,6 +54,8 @@ class EntropyMetric(BaseMetric):
         prefix: Optional[str] = None,
         id_start: int = 0,
         id_end: int = 79,
+        save_miou: Optional[str] = None,
+        ignore_index: int = 255,
         **kwargs,
     ) -> None:
         super().__init__(collect_device=collect_device, prefix=prefix)
@@ -62,6 +69,8 @@ class EntropyMetric(BaseMetric):
         self.num_templates = num_templates
         self.id_start = id_start
         self.id_end = id_end
+        self.save_miou = save_miou
+        self.ignore_index = ignore_index
         self.process_all_templates = (
             self.id_end - self.id_start + 1
         ) == self.num_templates
@@ -77,6 +86,17 @@ class EntropyMetric(BaseMetric):
             }
             self.total_pixels = np.float64(0)
             self.file_count = 0
+            
+            # Initialize IoU tracking for each template
+            self.iou_data = {
+                str(t): {
+                    "area_intersect": torch.zeros(self.num_classes, dtype=torch.float64),
+                    "area_union": torch.zeros(self.num_classes, dtype=torch.float64),
+                    "area_pred_label": torch.zeros(self.num_classes, dtype=torch.float64),
+                    "area_label": torch.zeros(self.num_classes, dtype=torch.float64),
+                }
+                for t in range(self.id_start, self.id_end + 1)
+            }
 
     def process(self, data_batch: dict, data_samples: Sequence[torch.Tensor]) -> None:
         """Process one batch of data and data_samples.
@@ -89,8 +109,10 @@ class EntropyMetric(BaseMetric):
         if not is_main_process():
             return
 
-        # Get metadata from data_batch
-        img_meta = data_batch["data_samples"][0].metainfo
+        # Get metadata and ground truth from data_batch
+        data_sample = data_batch["data_samples"][0]
+        img_meta = data_sample.metainfo
+        gt_sem_seg = data_sample.gt_sem_seg.data.squeeze()  # Get ground truth
 
         # Get original dimensions to update total_pixels
         H, W = img_meta["ori_shape"][:2]
@@ -123,6 +145,16 @@ class EntropyMetric(BaseMetric):
                 )
                 prob = prob.squeeze(0)
             pred_label = torch.argmax(prob, dim=0)
+
+            # Compute IoU statistics for this template using IoUMetric's method
+            gt_label = gt_sem_seg.to(pred_label.device)
+            area_intersect, area_union, area_pred_label, area_label = IoUMetric.intersect_and_union(
+                pred_label, gt_label, self.num_classes, self.ignore_index
+            )
+            self.iou_data[template_key]["area_intersect"] += area_intersect.to(torch.float64)
+            self.iou_data[template_key]["area_union"] += area_union.to(torch.float64)
+            self.iou_data[template_key]["area_pred_label"] += area_pred_label.to(torch.float64)
+            self.iou_data[template_key]["area_label"] += area_label.to(torch.float64)
 
             # Compute entropy for each class
             for class_idx in range(self.num_classes):
@@ -277,5 +309,62 @@ class EntropyMetric(BaseMetric):
         finally:
             # Always release the lock
             self.release_lock(json_file_path)
+
+        # Compute and save mIoU results for each template
+        miou_results = {
+            "model": self.model_name,
+            "dataset": self.dataset_name,
+            "templates": {}
+        }
+
+        for template_idx in range(self.id_start, self.id_end + 1):
+            template_key = str(template_idx)
+            iou_data = self.iou_data[template_key]
+            
+            # Compute IoU for each class
+            area_intersect = iou_data["area_intersect"]
+            area_union = iou_data["area_union"]
+            
+            # Avoid division by zero
+            iou = area_intersect / (area_union + 1e-10)
+            iou = iou.numpy()
+            
+            # Compute mean IoU (ignoring NaN values)
+            mean_iou = float(np.nanmean(iou) * 100)
+            
+            # Per-class IoU
+            per_class_iou = {
+                class_name: float(f"{iou[i] * 100:.2f}")
+                for i, class_name in enumerate(class_names)
+            }
+            
+            miou_results["templates"][template_key] = {
+                "template_id": template_idx,
+                "mean_iou": float(f"{mean_iou:.2f}"),
+                "per_class_iou": per_class_iou
+            }
+            
+            # Update metrics dict with the best template's mIoU
+            if template_idx == self.id_start:
+                metrics["mIoU"] = mean_iou
+
+        # Save mIoU results to JSON file
+        if self.save_miou is not None:
+            mkdir_or_exist(self.save_miou)
+            miou_json_path = os.path.join(self.save_miou, f"mIoU_results_{self.model_name}_{self.dataset_name}.json")
+        else:
+            miou_json_path = analysis_dir / f"mIoU_results_{self.model_name}_{self.dataset_name}.json"
+        
+        with open(miou_json_path, "w") as f:
+            json.dump(miou_results, f, indent=2)
+        
+        print_log(f"mIoU results saved to {miou_json_path}", logger=logger)
+        
+        # Print summary of mIoU for each template
+        print_log(f"\nmIoU Summary for templates {self.id_start}-{self.id_end}:", logger=logger)
+        for template_idx in range(self.id_start, self.id_end + 1):
+            template_key = str(template_idx)
+            mean_iou = miou_results["templates"][template_key]["mean_iou"]
+            print_log(f"  Template {template_idx}: mIoU = {mean_iou:.2f}%", logger=logger)
 
         return metrics
