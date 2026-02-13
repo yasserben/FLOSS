@@ -2,6 +2,7 @@
 */__pycache__/*
 /work_dirs/*
 .vscode/
+.cursor/
 data/
 *.out
 *.png

@@ -1,24 +1,15 @@
 # FLOSS: Free Lunch in Open-vocabulary Semantic Segmentation
 
 <!-- [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/TODO/open-vocabulary-semantic-segmentation-on)](https://paperswithcode.com/paper/TODO) -->
-[![arXiv](https://img.shields.io/badge/arXiv-2504.10487-b31b1b.svg)](https://arxiv.org/abs/2504.10487)
 [![Project Page](https://img.shields.io/badge/Project-FLOSS-blue)](https://yasserben.github.io/FLOSS/)
+[![Colab](https://img.shields.io/badge/Colab-Open_Notebook-F9AB00?logo=googlecolab&logoColor=white)](https://colab.research.google.com/github/yasserben/FLOSS/blob/main/notebooks/FLOSS_Reproducibility.ipynb)
+[![arXiv](https://img.shields.io/badge/arXiv-2504.10487-b31b1b.svg)](https://arxiv.org/abs/2504.10487)
 
 This is the official implementation of our paper:  
 **FLOSS: Free Lunch in Open-vocabulary Semantic Segmentation**  
 [Yasser Benigmim](https://yasserben.github.io/), [Mohammad Fahes](https://github.com/mfahes), [Tuan-Hung Vu](https://tuanhungvu.github.io/), [Andrei Bursuc](https://abursuc.github.io/), [Raoul de Charette](https://team.inria.fr/rits/membres/raoul-de-charette/)
 
 <!-- [Project Page](TODO) | [ArXiv](TODO) -->
-
-# Table of Contents
-- [Overview](#overview)
-- [Notebook](#notebook)
-- [Installation](#installation)
-- [Data Preparation](#data-preparation)
-- [Evaluating Models](#evaluating-models)
-- [Computing Template Rankings](#computing-template-rankings)
-- [Results](#results)
-- [Citation](#citation)
 
 ## Overview
 
@@ -31,13 +22,38 @@ This is the official implementation of our paper:
 **FLOSS challenges the conventional wisdom of using averaged templates in CLIP-based OVSS models by:**
 
 1. **Identifying expert templates for each class that outperform averaged classifiers**
-2. **Using unsupervised metrics (e.g., entropy) to select these experts without labels**
+2. **Using entropy as the unsupervised metric to select these experts without labels**
 3. **Introducing a novel fusion scheme to combine expert predictions**
 4. **Providing a plug-and-play solution requiring no training or labels**
 
+# Table of Contents
+- [Overview](#overview)
+- [News](#news)
+- [Notebook](#notebook)
+- [Installation](#installation)
+- [Data Preparation](#data-preparation)
+- [Evaluating Models](#evaluating-models)
+- [Computing Template Rankings](#computing-template-rankings)
+- [Results](#results)
+- [Citation](#citation)
+
+## News
+
+- 🚀 **New (02/2026): FLOSS notebook is released**
+
 ## Notebook
 
-Le notebook de reproductibilite est disponible ici: `notebooks/FLOSS_Reproducibility.ipynb`.
+**Reproduce FLOSS results with a single end-to-end pipeline, run evaluation and ranking experiments directly in Colab, and replace entropy with your own unsupervised metric to compare outcomes immediately.**
+
+Colab: [Open FLOSS_Reproducibility.ipynb](https://colab.research.google.com/github/yasserben/FLOSS/blob/main/notebooks/FLOSS_Reproducibility.ipynb)
+
+Local Jupyter: [`notebooks/FLOSS_Reproducibility.ipynb`](notebooks/FLOSS_Reproducibility.ipynb)
+
+To run it locally:
+
+```bash
+jupyter notebook notebooks/FLOSS_Reproducibility.ipynb
+```
 
 ## Installation
 
