@@ -11,15 +11,16 @@ This is the official implementation of our paper:
 <!-- [Project Page](TODO) | [ArXiv](TODO) -->
 
 # Table of Contents
-- [🎯 TL;DR](#-tldr)
-- [⚙️ Installation](#️-installation)
-- [🗂️ Data Preparation](#️-data-preparation)
-- [🔍 Evaluating Models](#-evaluating-models)
-- [🏆 Computing Template Rankings](#-computing-template-rankings)
-- [📈 Results](#-results)
-- [📚 Citation](#-citation)
+- [Overview](#overview)
+- [Notebook](#notebook)
+- [Installation](#installation)
+- [Data Preparation](#data-preparation)
+- [Evaluating Models](#evaluating-models)
+- [Computing Template Rankings](#computing-template-rankings)
+- [Results](#results)
+- [Citation](#citation)
 
-## 🎯 TL;DR
+## Overview
 
 <p align="center">
   <img src="img/teaser.jpg" width="65%">
@@ -34,7 +35,11 @@ This is the official implementation of our paper:
 3. **Introducing a novel fusion scheme to combine expert predictions**
 4. **Providing a plug-and-play solution requiring no training or labels**
 
-## ⚙️ Installation
+## Notebook
+
+Le notebook de reproductibilite est disponible ici: `notebooks/FLOSS_Reproducibility.ipynb`.
+
+## Installation
 
 1. Create and activate a conda environment:
 ```bash
@@ -56,7 +61,7 @@ pip install -r requirements.txt
 > [!NOTE]
 > This code has been tested with CUDA 12.4. Make sure you have the appropriate CUDA version installed on your system.
 
-## 🗂️ Data Preparation
+## Data Preparation
 
 Download and process the datasets following the [MMSegmentation guide](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md). Place all datasets in `./data` with the following structure:
 ```
@@ -90,7 +95,7 @@ python tools/convert_datasets/mapillary_resize.py data/mapillary/validation/imag
     data/mapillary/half/val_label
 ```
 
-## 🔍 Evaluating Models
+## Evaluating Models
 
 Download the [CLIP-DINOiser checkpoint](https://drive.google.com/file/d/1juyBB0zlEShwThoZ1PzHIIHO-l_qmdro/view?usp=sharing) and place it in `checkpoints/clip_dinoiser/`.
 
@@ -124,7 +129,7 @@ python ./tools/eval_naclip.py --dataset DATASET --mode fusion
 
 Replace `DATASET` with one of: `cityscapes`, `pascalvoc20`, `pascalco59`, `ade20k`, `cocostuff`, `mapillary`, `bdd10k`, or `acdc_night`, `acdc_snow`, `acdc_rain` `acdc_fog`.
 
-## 🏆 Computing Template Rankings
+## Computing Template Rankings
 
 To reproduce the rankings:
 
@@ -142,7 +147,7 @@ python ./tools/test.py configs/clipdinoiser.py --dataset ade20k --mode compute_m
 > [!TIP]
 > When computing metrics, you can use the training set by specifying `--split train`. However, be aware that processing large datasets like ADE20K and COCO-Stuff requires significant computational resources - ideally a GPU with 40GB of memory 💾. To make this process more manageable, you can process the templates in smaller batches using `--id-start` and `--id-end`. For example, instead of processing all 80 templates at once, you can process them in groups (e.g., templates 0-9, then 10-19, etc.). This allows you to parallelize the work across multiple processes, making it more efficient for large-scale datasets.
 
-## 📈 Results
+## Results
 
 | Method | Cityscapes | VOC20 | CO59 | ADE20K | Stuff | Avg |
 |--------|------------|--------------|-------------|---------|------------|-----|
@@ -153,7 +158,7 @@ python ./tools/test.py configs/clipdinoiser.py --dataset ade20k --mode compute_m
 | CLIP-DINOiser | 31.1 | 80.9 | 35.9 | 20.0 | 24.6 | 38.5 |
 | + FLOSS | **34.6** | **82.3** | **36.2** | **20.7** | **24.7** | **39.7** |
 
-## 📚 Citation
+## Citation
 
 If you find this work useful, please cite our paper:
 ```bibtex
@@ -168,8 +173,8 @@ If you find this work useful, please cite our paper:
 }
 ```
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 We would like to thank the authors of [MMSegmentation](https://github.com/open-mmlab/mmsegmentation), [CLIP-DINOiser](https://github.com/wysoczanska/clip_dinoiser), and [NACLIP](https://github.com/sinahmr/NACLIP) for making their code publicly available. Our implementation builds upon their excellent work.
 
-[🔝 Back to Top](#table-of-contents)
+[Back to Top](#table-of-contents)
