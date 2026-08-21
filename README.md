@@ -1,3 +1,5 @@
+
+
 # FLOSS: Free Lunch in Open-vocabulary Semantic Segmentation
 
 <!-- [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/TODO/open-vocabulary-semantic-segmentation-on)](https://paperswithcode.com/paper/TODO) -->
@@ -113,7 +115,7 @@ python tools/convert_datasets/mapillary_resize.py data/mapillary/validation/imag
 
 ## Evaluating Models
 
-Download the [CLIP-DINOiser checkpoint](https://drive.google.com/file/d/1juyBB0zlEShwThoZ1PzHIIHO-l_qmdro/view?usp=sharing) and place it in `checkpoints/clip_dinoiser/`.
+Download the [CLIP-DINOiser checkpoint](https://drive.google.com/file/d/1juyBB0zlEShwThoZ1PzHIIHO-l_qmdro/view?usp=sharing) and place it at `checkpoints/clip_dinoiser/model_weights.pth`.
 
 To evaluate the baseline models (without FLOSS):
 
